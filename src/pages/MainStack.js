@@ -1,18 +1,16 @@
-import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from './LoginScreen';
-import SettingsScreen from './SettingsScreen';
-import CameraStack from './CameraStack';
-
-const Stack = createStackNavigator();
+import MyTabs from '../components/MyTabs'
 
 export default function MainStack() {
+    const Stack = createStackNavigator();
+
     return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName='Camera'>
-                <Stack.Screen name="Camera" component={CameraStack} />
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Settings" component={SettingsScreen} />
+        <NavigationContainer independent={true}>
+            <Stack.Navigator initialRouteName="Login" >
+                <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="MyTabs" component={MyTabs} />
             </Stack.Navigator>
         </NavigationContainer>
     );

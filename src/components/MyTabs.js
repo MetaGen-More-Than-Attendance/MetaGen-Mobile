@@ -2,22 +2,23 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SettingsScreen from '../pages/SettingsScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import LoginScreen from '../pages/LoginScreen';
 import CameraStack from '../pages/CameraStack';
 import AttendanceReportScreen from '../pages/AttendanceReportScreen';
-import AccountStack from '../pages/AccountStack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProfileScreen from '../pages/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
-
 const MyTabs = () => {
+    const value = AsyncStorage.getItem('token')
     return (
-        <NavigationContainer>
+        <NavigationContainer independent={true}>
             <Tab.Navigator
+                initialRouteName="Profile"
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                         let iconName;
 
-                        if (route.name === 'Account') {
+                        if (route.name === 'Profile') {
                             iconName = focused
                                 ? 'people'
                                 : 'people-outline';
@@ -30,7 +31,7 @@ const MyTabs = () => {
                         else if (route.name === 'Settings') {
                             iconName = focused ? 'settings' : 'settings-outline';
                         }
-                        
+
 
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
@@ -42,9 +43,9 @@ const MyTabs = () => {
                 <Tab.Screen name="Attendance" component={AttendanceReportScreen} />
                 <Tab.Screen name="Scan" component={CameraStack} />
                 <Tab.Screen name="Settings" component={SettingsScreen} />
-                <Tab.Screen name="Account" component={AccountStack} />
+                <Tab.Screen name="Profile" component={ProfileScreen} />
             </Tab.Navigator>
-          
+
         </NavigationContainer>
     );
 }

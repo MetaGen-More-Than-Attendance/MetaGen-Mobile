@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
               ] = `Bearer ${result.data}`;
 
               resetForm();
-              navigation.navigate("Profile")
+              navigation.navigate("MyTabs")
             })
             .catch(() => {
               alert("Wrong email or password")
