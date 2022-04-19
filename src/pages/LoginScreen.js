@@ -7,6 +7,16 @@ import axios from "axios";
 
 const LoginScreen = ({ navigation }) => {
   let loginService = new LoginService();
+
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value)
+      await AsyncStorage.setItem('token', jsonValue)
+    } catch (e) {
+      console.log("error" + e)
+    }
+  }
+
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
       <Text style={styles.welcome}>Welcome to MetaGen</Text>
@@ -33,9 +43,7 @@ const LoginScreen = ({ navigation }) => {
         onSubmit={(values, { resetForm }) => {
           loginService.login(values)
             .then((result) => {
-              console.log("test");
-              console.log(result);
-              AsyncStorage.setItem("token", result.data.token);
+              storeData(result.data.token)
               axios.defaults.headers.common[
                 "Authorization"
               ] = `Bearer ${result.data}`;

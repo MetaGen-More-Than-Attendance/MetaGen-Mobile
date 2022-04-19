@@ -4,12 +4,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import CameraStack from '../pages/CameraStack';
 import AttendanceReportScreen from '../pages/AttendanceReportScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProfileScreen from '../pages/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 const MyTabs = () => {
-    const value = AsyncStorage.getItem('token')
+
     return (
         <NavigationContainer independent={true}>
             <Tab.Navigator
@@ -37,7 +36,7 @@ const MyTabs = () => {
                     },
                     tabBarActiveTintColor: 'tomato',
                     tabBarInactiveTintColor: 'gray',
-                    headerShown: false
+                    headerShown: false,
                 })}
             >
                 <Tab.Screen name="Attendance" component={AttendanceReportScreen} />
