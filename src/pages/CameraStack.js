@@ -7,8 +7,8 @@ const Stack = createStackNavigator();
 export default function CameraStack() {
     return (
         <Stack.Navigator >
-            <Stack.Screen name="Scan Qr Code" component={AttendanceTrackingScreen} />
-            <Stack.Screen name="Scan Your Face" component={ScanQrScreen} />
+            <Stack.Screen name="Scan Qr Code" component={AttendanceTrackingScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Scan Your Face" component={ScanQrScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     );
 }
