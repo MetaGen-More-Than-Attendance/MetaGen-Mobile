@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
-import { View, Button, StyleSheet, TextInput, Text, Image, ActivityIndicator } from "react-native";
-import { Formik, Field } from 'formik';
+import React, { useState } from "react";
+import {
+  View,
+  Button,
+  StyleSheet,
+  TextInput,
+  Text,
+  Image,
+  ActivityIndicator,
+} from "react-native";
+import { Formik, Field } from "formik";
 import LoginService from "../services/loginService";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const LoginScreen = ({ navigation }) => {
@@ -10,29 +18,37 @@ const LoginScreen = ({ navigation }) => {
 
   const storeData = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('token', jsonValue)
+      const userId = JSON.stringify(value.userDto.userId);
+      const userMail = JSON.stringify(value.userDto.userMail);
+      const userName = JSON.stringify(value.userDto.userName);
+      const userSurname = JSON.stringify(value.userDto.userSurname);
+
+      await AsyncStorage.setItem("token", value.token);
+      await AsyncStorage.setItem("id", userId);
+      await AsyncStorage.setItem("userMail", userMail);
+      await AsyncStorage.setItem("userName", userName);
+      await AsyncStorage.setItem("userSurname", userSurname);
     } catch (e) {
-      console.log("error" + e)
+      console.log("error" + e);
     }
-  }
+  };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text style={styles.welcome}>Welcome to MetaGen</Text>
 
-      <Image style={styles.icon} source={require('../../assets/favicon.png')} />
+      <Image style={styles.icon} source={require("../../assets/favicon.png")} />
 
       <Formik
-        initialValues={{ username: '', password: '' }}
+        initialValues={{ username: "", password: "" }}
         validate={(values) => {
           const errors = {};
           if (!values.username) {
-            errors.username = '*';
+            errors.username = "*";
           } else if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.username)
           ) {
-            errors.username = 'Invalid';
+            errors.username = "Invalid";
           }
           if (!values.password) {
             errors.password = "*";
@@ -41,26 +57,33 @@ const LoginScreen = ({ navigation }) => {
           return errors;
         }}
         onSubmit={(values, { resetForm }) => {
-          loginService.login(values)
+          loginService
+            .login(values)
             .then((result) => {
-              storeData(result.data.token)
+              storeData(result.data);
               axios.defaults.headers.common[
                 "Authorization"
               ] = `Bearer ${result.data}`;
 
               resetForm();
-              navigation.navigate("MyTabs")
+              navigation.navigate("MyTabs");
             })
             .catch(() => {
-              alert("Wrong email or password")
+              alert("Wrong email or password");
               resetForm();
             });
-
         }}
       >
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
           <>
-            <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <View style={{ display: "flex", flexDirection: "row" }}>
               {errors.username && touched.username && (
                 <View>
                   <Text style={{ color: "red" }}>{errors.username}</Text>
@@ -70,15 +93,15 @@ const LoginScreen = ({ navigation }) => {
             </View>
 
             <TextInput
-              onChangeText={handleChange('username')}
-              onBlur={handleBlur('username')}
+              onChangeText={handleChange("username")}
+              onBlur={handleBlur("username")}
               value={values.username}
-              placeholder='Enter email'
+              placeholder="Enter email"
               keyboardType="email-address"
               style={styles.input}
             />
 
-            <View style={{ display: "flex", flexDirection: 'row', }}>
+            <View style={{ display: "flex", flexDirection: "row" }}>
               {errors.password && touched.password && (
                 <View>
                   <Text style={{ color: "red" }}>{errors.password}</Text>
@@ -88,26 +111,28 @@ const LoginScreen = ({ navigation }) => {
             </View>
 
             <TextInput
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
               value={values.password}
-              placeholder='Enter password'
+              placeholder="Enter password"
               style={styles.input}
               autoCapitalize="none"
               autoCorrect={false}
-              textContentType='newPassword'
+              textContentType="newPassword"
               secureTextEntry
             />
 
             <View style={{ marginTop: 10 }}>
-              <Button title="LOGIN" onPress={handleSubmit} style={styles.login} />
+              <Button
+                title="LOGIN"
+                onPress={handleSubmit}
+                style={styles.login}
+              />
             </View>
-
           </>
         )}
       </Formik>
-
-    </View >
+    </View>
   );
 };
 
@@ -116,8 +141,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   welcome: {
     fontSize: 20,
-    fontWeight: '100',
-    marginBottom: 20
+    fontWeight: "100",
+    marginBottom: 20,
   },
   icon: {
     width: 50,
@@ -125,17 +150,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   emailText: {
-    width: '60%',
-    alignItems: 'flex-start',
-    fontSize: 15
+    width: "60%",
+    alignItems: "flex-start",
+    fontSize: 15,
   },
   input: {
     height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
-    width: '60%',
+    width: "60%",
     borderRadius: 10,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
-})
+});

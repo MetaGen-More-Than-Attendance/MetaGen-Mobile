@@ -12,9 +12,10 @@ import * as FaceDetector from "expo-face-detector";
 import { Ionicons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 import * as Permissions from "expo-permissions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const ScanQrScreen = ({ navigation }) => {
+const ScanQrScreen = ({ route, navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [camera, setCamera] = useState(null);
@@ -92,7 +93,17 @@ const ScanQrScreen = ({ navigation }) => {
         type: "image/jpeg",
         name: assert.filename,
       });
-      fetch("https://metagen-flask.herokuapp.com/video_feed/4", {
+      let studentId = await AsyncStorage.getItem("id");
+      let lectureId = route.params.lectureId;
+      console.log(
+        JSON.stringify({
+          absenteeismDate: new Date(),
+          absenteeism: "true",
+          lectureId: lectureId,
+          studentId: studentId,
+        })
+      );
+      fetch("https://metagen-flask.herokuapp.com/video_feed/" + studentId, {
         method: "post",
         headers: {
           "Content-Type": "multipart/form-data",
@@ -102,6 +113,21 @@ const ScanQrScreen = ({ navigation }) => {
         .then((response) => response.json())
         .then((responseJson) => {
           if (responseJson == "true") {
+            fetch(
+              "https://meta-gen.herokuapp.com/api/absenteeism/updateAbseenteism",
+              {
+                method: "put",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  absenteeismDate: new Date(),
+                  absenteeism: "true",
+                  lectureId: lectureId,
+                  studentId: studentId,
+                }),
+              }
+            );
             alertWithoutButtons("Attendance is succesful");
           } else {
             alertWithoutButtons("Attendance failed");
