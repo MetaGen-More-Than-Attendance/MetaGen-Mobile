@@ -23,7 +23,6 @@ const Attendance = ({ route }) => {
             attendance = childValue;
           }
           detailData.push({ date: date, attendance: attendance });
-          3;
         }
         setData([...detailData]);
       });
@@ -36,12 +35,12 @@ const Attendance = ({ route }) => {
           <DataTable.Title style={styles.header}>Date</DataTable.Title>
           <DataTable.Title style={styles.header}>Absenteeism</DataTable.Title>
         </DataTable.Header>
-        {data.map((tarih) => {
+        {data.map((e) => {
           return (
-            <DataTable.Row>
-              <DataTable.Cell style={styles.cell}>{tarih.date}</DataTable.Cell>
+            <DataTable.Row key={e.date}>
+              <DataTable.Cell style={styles.cell}>{e.date}</DataTable.Cell>
               <DataTable.Cell style={styles.cell}>
-                {tarih.attendance ? "✅" : "❌"}
+                {e.attendance ? "✅" : "❌"}
               </DataTable.Cell>
             </DataTable.Row>
           );
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#b4c1c2",
   },
   table: {
     backgroundColor: "orange",
