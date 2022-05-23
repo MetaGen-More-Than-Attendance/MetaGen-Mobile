@@ -29,8 +29,9 @@ const MyTabs = () => {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "tomato",
-          tabBarInactiveTintColor: "gray",
+        tabBarStyle: { backgroundColor: '#222831' },
+          tabBarActiveTintColor: "#00ADB5",
+          tabBarInactiveTintColor: "white",
           headerShown: false,
         })}
       >
