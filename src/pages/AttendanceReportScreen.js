@@ -25,6 +25,7 @@ const AttendanceReport = ({ navigation }) => {
                 onPress={() =>
                   navigation.navigate("Attendance", {
                     data: data.lectureId,
+                    lectureName: data.lectureName
                   })
                 }
               >
