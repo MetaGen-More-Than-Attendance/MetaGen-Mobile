@@ -20,6 +20,7 @@ const AttendanceReport = ({ navigation }) => {
           {lecture?.map((data) => {
             return (
               <Card
+              style={styles.cardView}
                 onPress={() =>
                   navigation.navigate("Attendance", {
                     data: data.lectureId,
@@ -30,7 +31,7 @@ const AttendanceReport = ({ navigation }) => {
                   <Title>{data.lectureName}</Title>
                   <Paragraph>{data.instructorName}</Paragraph>
                 </Card.Content>
-                <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+                <Card.Cover source={{ uri: "https://picsum.photos/700" }} style={styles.cover} />
               </Card>
             );
           })}
@@ -44,10 +45,19 @@ export default AttendanceReport;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#b4c1c2'
   },
   cards: {
     width: "100%",
     height: "50%",
     padding: 50,
   },
+  cardView: {
+    borderRadius: 50,
+    elevation: 20
+  },
+  cover: {
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+  }
 });
