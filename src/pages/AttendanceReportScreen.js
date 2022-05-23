@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AttendanceReport = ({ navigation }) => {
   const [lecture, setlecture] = useState([]);
-  const getId = async () => {};
+  const getId = async () => { };
   useEffect(async () => {
     let studentId = await AsyncStorage.getItem("id");
     const URL = `https://meta-gen.herokuapp.com/api/student/${studentId}/lecture`;
@@ -20,7 +20,8 @@ const AttendanceReport = ({ navigation }) => {
           {lecture?.map((data) => {
             return (
               <Card
-              style={styles.cardView}
+                style={styles.cardView}
+                key={data.lectureId}
                 onPress={() =>
                   navigation.navigate("Attendance", {
                     data: data.lectureId,
