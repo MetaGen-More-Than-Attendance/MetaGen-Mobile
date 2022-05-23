@@ -6,7 +6,8 @@ import {
   TextInput,
   Text,
   Image,
-  ActivityIndicator,
+  Pressable,
+  TouchableOpacity
 } from "react-native";
 import { Formik, Field } from "formik";
 import LoginService from "../services/loginService";
@@ -34,10 +35,11 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={styles.welcome}>Welcome to MetaGen</Text>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: '#222831', }}>
 
-      <Image style={styles.icon} source={require("../../assets/favicon.png")} />
+      <Text style={styles.welcome}>MetaGen</Text>
+      <Image style={styles.icon} source={require("../../assets/metagenLogo.png")} />
+      <Text style={styles.banner}>More Than Attendance</Text>
 
       <Formik
         initialValues={{ username: "", password: "" }}
@@ -86,7 +88,7 @@ const LoginScreen = ({ navigation }) => {
             <View style={{ display: "flex", flexDirection: "row" }}>
               {errors.username && touched.username && (
                 <View>
-                  <Text style={{ color: "red" }}>{errors.username}</Text>
+                  <Text style={{ color: "#00ADB5" }}>{errors.username}</Text>
                 </View>
               )}
               <Text style={styles.emailText}>Email</Text>
@@ -104,7 +106,7 @@ const LoginScreen = ({ navigation }) => {
             <View style={{ display: "flex", flexDirection: "row" }}>
               {errors.password && touched.password && (
                 <View>
-                  <Text style={{ color: "red" }}>{errors.password}</Text>
+                  <Text style={{ color: "#00ADB5" }}>{errors.password}</Text>
                 </View>
               )}
               <Text style={styles.emailText}>Password</Text>
@@ -123,15 +125,15 @@ const LoginScreen = ({ navigation }) => {
             />
 
             <View style={{ marginTop: 10 }}>
-              <Button
-                title="LOGIN"
-                onPress={handleSubmit}
-                style={styles.login}
-              />
+              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.loginText}>Login</Text>
+              </TouchableOpacity>
             </View>
+            
           </>
         )}
       </Formik>
+
     </View>
   );
 };
@@ -140,27 +142,51 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   welcome: {
+    fontSize: 30,
+    fontWeight: "100",
+    marginBottom: 15,
+    color: '#00ADB5'
+  },
+  banner: {
     fontSize: 20,
     fontWeight: "100",
-    marginBottom: 20,
+    marginBottom: 12,
+    color: '#00ADB5'
   },
   icon: {
-    width: 50,
-    height: 50,
-    marginBottom: 20,
+    width: 150,
+    height: 150,
+    marginBottom: 15,
   },
   emailText: {
     width: "60%",
     alignItems: "flex-start",
     fontSize: 15,
+    color: 'white'
   },
   input: {
     height: 40,
-    margin: 12,
+    margin: 10,
     borderWidth: 1,
     padding: 10,
     width: "60%",
     borderRadius: 10,
     backgroundColor: "white",
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 5,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    elevation: 3,
+    backgroundColor: '#00ADB5',
+  },
+  loginText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
   },
 });
