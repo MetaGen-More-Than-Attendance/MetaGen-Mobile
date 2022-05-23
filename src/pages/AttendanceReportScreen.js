@@ -54,11 +54,12 @@ const styles = StyleSheet.create({
     padding: 50,
   },
   cardView: {
-    borderRadius: 50,
-    elevation: 20
+    borderRadius: 40,
+    elevation: 15,
+    marginBottom: 50
   },
   cover: {
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
   }
 });
