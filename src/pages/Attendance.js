@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { DataTable } from "react-native-paper";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { DataTable, Title } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { any } from "react-native/Libraries/Text/TextNativeComponent";
+import { FontAwesome } from '@expo/vector-icons';
 
 const Attendance = ({ route }) => {
-  const lectureId = route.params.data;
   const [data, setData] = useState([]);
-  const object = { date2: {}, status2: {} };
-  const [attendance, setAttendances] = useState([]);
+  const lectureId = route.params.data;
+  const lectureName = route.params.lectureName;
+
   useEffect(async () => {
     let studentId = await AsyncStorage.getItem("id");
     const URL = `https://meta-gen.herokuapp.com/api/absenteeism/getAbseenteismByStudentIdAndLectureId?lectureId=${lectureId}&studentId=${studentId}&semesterId=1`;
@@ -27,20 +27,26 @@ const Attendance = ({ route }) => {
         setData([...detailData]);
       });
   }, []);
-  console.log(data);
+
   return (
     <View style={styles.container}>
-      <DataTable style={styles.table}>
+      <Title style={styles.welcome}>{lectureName} </Title>
+      <Title style={styles.welcome}>My Status</Title>
+      <DataTable>
         <DataTable.Header>
-          <DataTable.Title style={styles.header}>Date</DataTable.Title>
-          <DataTable.Title style={styles.header}>Absenteeism</DataTable.Title>
+          <DataTable.Title style={styles.header}>
+            <Text style={styles.headerText}>Date</Text>
+          </DataTable.Title>
+          <DataTable.Title style={styles.header}>
+            <Text style={styles.headerText}>Attendance</Text>
+          </DataTable.Title>
         </DataTable.Header>
         {data.map((e) => {
           return (
             <DataTable.Row key={e.date}>
               <DataTable.Cell style={styles.cell}>{e.date}</DataTable.Cell>
               <DataTable.Cell style={styles.cell}>
-                {e.attendance ? "✅" : "❌"}
+                {e.attendance ? <FontAwesome name="check" size={24} color="green" /> : <FontAwesome name="close" size={24} color="red" />}
               </DataTable.Cell>
             </DataTable.Row>
           );
@@ -58,13 +64,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#b4c1c2",
   },
-  table: {
-    backgroundColor: "orange",
-  },
   header: {
     justifyContent: "center",
   },
   cell: {
     justifyContent: "center",
   },
+  welcome: {
+    fontSize: 30,
+    marginBottom: 20,
+    marginTop: 10,
+    textAlign: 'center'
+  },
+  headerText: {
+    fontSize: 15,
+    fontWeight: "bold"
+  }
 });
