@@ -5,14 +5,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AttendanceReport = ({ navigation }) => {
   const [lecture, setlecture] = useState([]);
-  const getId = async () => { };
+  
   useEffect(async () => {
     let studentId = await AsyncStorage.getItem("id");
     const URL = `https://meta-gen.herokuapp.com/api/student/${studentId}/lecture`;
     fetch(URL)
-      .then((response) => response.json())
-      .then((data) => setlecture(data));
+    .then((response) => response.json())
+    .then((data) => setlecture(data));
   }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -23,7 +24,7 @@ const AttendanceReport = ({ navigation }) => {
                 style={styles.cardView}
                 key={data.lectureId}
                 onPress={() =>
-                  navigation.navigate("Attendance", {
+                  navigation.navigate("AttendanceStatus", {
                     data: data.lectureId,
                     lectureName: data.lectureName
                   })
@@ -31,7 +32,7 @@ const AttendanceReport = ({ navigation }) => {
               >
                 <Card.Content>
                   <Title>{data.lectureName}</Title>
-                  <Paragraph>{data.instructorName}</Paragraph>
+                  <Paragraph>{data.instructorName} {data.instructorSurname}</Paragraph>
                 </Card.Content>
                 <Card.Cover source={{ uri: "https://picsum.photos/700" }} style={styles.cover} />
               </Card>
