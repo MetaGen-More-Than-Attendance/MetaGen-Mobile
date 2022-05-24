@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { Title } from "react-native-paper";
 
 const AttendanceTrackingScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -14,15 +15,23 @@ const AttendanceTrackingScreen = ({ navigation }) => {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    alert(`Attendance request was sent. Please scan your face.`);
     navigation.navigate("Scan Your Face", { lectureId: data });
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return (
+      <View style={styles.permissionScreen}>
+        <Title style={styles.permissionText}>Requesting for camera permission</Title>
+      </View>
+    )
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <View style={styles.permissionScreen}>
+        <Title style={styles.noAccessText}>No access to camera</Title>
+      </View>
+    )
   }
 
   return (
@@ -32,12 +41,18 @@ const AttendanceTrackingScreen = ({ navigation }) => {
         style={StyleSheet.absoluteFillObject}
       />
       {scanned ? (
-        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
+        <TouchableOpacity style={styles.button} onPress={() => setScanned(false)}>
+          <Text style={styles.loginText}>Tap to Scan Again</Text>
+        </TouchableOpacity>
       ) : (
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={StyleSheet.absoluteFillObject}
-        />
+        >
+          <View style={styles.cameraFrame}>
+            <Image style={styles.icon} source={require("../../assets/qrScannerFrame.png")} />
+          </View>
+        </BarCodeScanner>
       )}
     </View>
   );
@@ -48,7 +63,45 @@ export default AttendanceTrackingScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: 'center',
+    backgroundColor: '#b4c1c2'
+  },
+  cameraFrame: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: 'center',
+  },
+  permissionScreen: {
+    flex: 1,
+    backgroundColor: '#222831',
     flexDirection: "column",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  permissionText: {
+    fontSize: 20,
+    fontWeight: "500",
+    color: 'white'
+  },
+  noAccessText: {
+    fontSize: 20,
+    fontWeight: "500",
+    color: 'red'
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    elevation: 3,
+    backgroundColor: '#00ADB5',
+  },
+  icon: {
+    width: 300,
+    height: 300,
   },
 });
