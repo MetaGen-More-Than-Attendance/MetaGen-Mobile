@@ -13,7 +13,7 @@ export default function LecturesStack() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Attendance"
+        name="AttendanceStatus"
         component={Attendance}
         options={{ headerShown: false }}
       />
