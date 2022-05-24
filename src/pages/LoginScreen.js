@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   View,
-  Button,
+  Modal,
   StyleSheet,
   TextInput,
   Text,
@@ -16,6 +16,7 @@ import axios from "axios";
 
 const LoginScreen = ({ navigation }) => {
   let loginService = new LoginService();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const storeData = async (value) => {
     try {
@@ -71,7 +72,7 @@ const LoginScreen = ({ navigation }) => {
               navigation.navigate("MyTabs");
             })
             .catch(() => {
-              alert("Wrong email or password");
+              setModalVisible(true)
               resetForm();
             });
         }}
@@ -129,10 +130,30 @@ const LoginScreen = ({ navigation }) => {
                 <Text style={styles.loginText}>Login</Text>
               </TouchableOpacity>
             </View>
-            
+
           </>
         )}
       </Formik>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Wrong email or password !</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Try Again</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
 
     </View>
   );
@@ -189,4 +210,37 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
+  centeredView: {
+    flex: 1,
+    marginTop: 22
+  },
+  modalView: {
+    margin: 15,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 30,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  buttonClose: {
+    backgroundColor: "#00ADB5",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    color: "black",
+    fontSize: 20,
+    marginBottom: 15,
+    textAlign: "center"
+  }
 });
