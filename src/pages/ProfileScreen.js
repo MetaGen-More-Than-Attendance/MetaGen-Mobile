@@ -21,8 +21,8 @@ const ProfileScreen = () => {
       <View style={styles.info}>
         <Title style={styles.welcome}>Welcome to MetaGen</Title>
         <Image style={styles.img} source={{ uri: `data:image/png;base64,${data.photo}` }} alt="?" />
-        <Title style={styles.name}>{data?.userName}{data?.userSurname}</Title>
-        <View style={styles.teo}>
+        <Title style={styles.name}>{data?.userName} {data?.userSurname}</Title>
+        <View style={styles.rows}>
           <View style={styles.icons}>
             <FontAwesome5 name="university" size={24} color="black" style={styles.icon} />
             <FontAwesome name="id-card" size={24} color="black" style={styles.icon} />
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 20
   },
-  teo: {
+  rows: {
     display: 'flex',
     flexDirection: 'row'
   },
