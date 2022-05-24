@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   ActivityIndicator,
-  Pressable
+  Pressable,
 } from "react-native";
 import { Camera } from "expo-camera";
 import * as FaceDetector from "expo-face-detector";
@@ -15,7 +15,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 import * as Permissions from "expo-permissions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 
 const ScanQrScreen = ({ route, navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -28,7 +28,7 @@ const ScanQrScreen = ({ route, navigation }) => {
   const [handleChangeFlashIcon, setHandleChangeFlashIcon] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [showButton, setShowButton] = useState(false);
-  const [text, setText] = useState("Face is recogniting please wait!")
+  const [text, setText] = useState("Face is recogniting please wait!");
   const URL = "https://192.168.1.31:5000/";
 
   const handleFacesDetected = ({ faces }) => {
@@ -61,7 +61,6 @@ const ScanQrScreen = ({ route, navigation }) => {
   }
 
   const takePicture = async () => {
-
     if (camera) {
       const data = await camera.takePictureAsync(null);
       setImage(data.uri);
@@ -70,7 +69,7 @@ const ScanQrScreen = ({ route, navigation }) => {
   };
 
   const handleFlashMode = async () => {
-    setHandleChangeFlashIcon(!handleChangeFlashIcon)
+    setHandleChangeFlashIcon(!handleChangeFlashIcon);
     setFlash(
       flash === Camera.Constants.FlashMode.off
         ? Camera.Constants.FlashMode.torch
@@ -90,7 +89,7 @@ const ScanQrScreen = ({ route, navigation }) => {
     const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
     // const { status } = await Camera.Permissions.MEDIA_LIBRARY;
     if (status === "granted") {
-      setModalVisible(true)
+      setModalVisible(true);
 
       const assert = await MediaLibrary.createAssetAsync(image);
 
@@ -143,33 +142,33 @@ const ScanQrScreen = ({ route, navigation }) => {
               }
             );
 
-            setText("Attendance is succesful")
+            setText("Attendance is succesful");
 
             setTimeout(() => {
-              return (
-                setModalVisible(false)
-              )
-            }, 900)
+              return setModalVisible(false);
+            }, 900);
 
             setTimeout(() => {
-              return (
-                navigation.navigate("Attendance")
-              )
-            }, 1000)
-
+              return navigation.navigate("Attendance");
+            }, 1000);
           } else {
-            setText("Attendance failed")
+            setText("Attendance is failed");
             setTimeout(() => {
-              return (
-                setModalVisible(false)
-              )
-            }, 900)
+              return setModalVisible(false);
+            }, 900);
             setTimeout(() => {
-              return (
-                navigation.navigate("Attendance")
-              )
-            }, 1000)
+              return navigation.navigate("Attendance");
+            }, 1000);
           }
+        })
+        .catch((error) => {
+          setText("Attendance is failed");
+          setTimeout(() => {
+            return setModalVisible(false);
+          }, 900);
+          setTimeout(() => {
+            return navigation.navigate("Attendance");
+          }, 1000);
         });
     } else {
       alertWithoutButtons("You missed to give permission !");
@@ -178,25 +177,18 @@ const ScanQrScreen = ({ route, navigation }) => {
 
   const handleResponse = () => {
     if (text === "Face is recogniting please wait!")
-      return (
-        <ActivityIndicator size="large" color="#00ADB5" />
-      )
+      return <ActivityIndicator size="large" color="#00ADB5" />;
     if (text === "Attendance is succesful") {
-      return (
-        <FontAwesome name="check" size={35} color="green" />
-      )
+      return <FontAwesome name="check" size={35} color="green" />;
     }
     if (text === "Attendance is failed") {
-      return (
-        <FontAwesome name="close" size={35} color="red" />
-      )
+      return <FontAwesome name="close" size={35} color="red" />;
     }
-  }
+  };
 
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.cameraContainer}>
-
         <Camera
           ref={(ref) => setCamera(ref)}
           style={styles.fixedRatio}
@@ -235,9 +227,12 @@ const ScanQrScreen = ({ route, navigation }) => {
             }}
           >
             <Ionicons
-              name={handleChangeFlashIcon === false ? "md-flash-off" : "md-flash"}
+              name={
+                handleChangeFlashIcon === false ? "md-flash-off" : "md-flash"
+              }
               size={50}
-              color="#00ADB5" i
+              color="#00ADB5"
+              i
               onPress={() => handleFlashMode()}
             />
           </TouchableOpacity>
@@ -258,11 +253,7 @@ const ScanQrScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         </Camera>
 
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalVisible}
-        >
+        <Modal animationType="fade" transparent={true} visible={modalVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>{text}</Text>
@@ -294,13 +285,13 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   text: {
-    color: 'white'
+    color: "white",
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -311,24 +302,24 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 10
+    elevation: 10,
   },
   modalText: {
     textAlign: "center",
     color: "white",
-    marginBottom: 5
+    marginBottom: 5,
   },
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 5
+    elevation: 5,
   },
   buttonClose: {
     backgroundColor: "#00ADB5",
-    marginTop: 5
+    marginTop: 5,
   },
 });
