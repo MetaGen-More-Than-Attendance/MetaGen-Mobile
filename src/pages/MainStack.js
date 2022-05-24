@@ -19,9 +19,9 @@ export default function MainStack() {
                     component={MyTabs}
                     options={{
                         headerTitle: 'Log out',
-                        // headerStyle: {
-                        //     backgroundColor: '#222831'
-                        // },
+                        headerStyle: {
+                            backgroundColor: '#222831'
+                        },
                         headerTintColor: '#00ADB5',
                         headerTitleStyle: {
                             backgroundColor: '#00ADB5',
